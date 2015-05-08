@@ -29,7 +29,8 @@ namespace DataflowQueue
 			_downloadStringAsync = new TransformBlock<string, Optional<string>> (
 				new Func<string, Task<Optional<string>>> (async uri => {
 					return await DoDownloadAsync (uri);
-				})
+				}),
+				new ExecutionDataflowBlockOptions { MaxMessagesPerTask = DataflowBlockOptions.Unbounded, }
 			);
 
 			_createWordList = new TransformBlock<Optional<string>, Optional<string[]>> (optionalText => {

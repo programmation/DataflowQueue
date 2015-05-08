@@ -67,6 +67,8 @@ namespace DataflowQueue
 
 			if (true) {
 				worker.Post ("http://www.gutenberg.org/files/6130/6130-0.txt");
+				worker.Post ("http://www.gutenberg.org/cache/epub/1727/pg1727.txt");
+				worker.Post ("http://www.gutenberg.org/cache/epub/1635/pg1635.txt");
 				_going = false;
 			} else {
 				Task.Run (async () => {
