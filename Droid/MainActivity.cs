@@ -8,6 +8,9 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Autofac;
+using Services;
+using Helpers;
+using Dataflow.Droid.Services;
 
 namespace DataflowQueue.Droid
 {
@@ -23,6 +26,8 @@ namespace DataflowQueue.Droid
 			var builder = new ContainerBuilder ();
 
 			builder.RegisterGeneric (typeof(DroidConcurrentQueue<>)).As (typeof(IPclConcurrentQueue<>));
+			builder.RegisterGeneric (typeof(DroidBlockingCollection<>)).As (typeof(IPclBlockingCollection<>));
+			builder.RegisterType<NativeLogger> ().As<INativeLogger> ().SingleInstance ();
 
 			LoadApplication (new App (builder));
 		}

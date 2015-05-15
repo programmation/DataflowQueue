@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Foundation;
 using UIKit;
 using Autofac;
@@ -9,6 +8,9 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using Helpers;
+using Services;
+using Dataflow.iOS.Services;
 
 namespace DataflowQueue.iOS
 {
@@ -27,6 +29,8 @@ namespace DataflowQueue.iOS
 			var builder = new ContainerBuilder ();
 
 			builder.RegisterGeneric (typeof(TouchConcurrentQueue<>)).As (typeof(IPclConcurrentQueue<>));
+			builder.RegisterGeneric (typeof(TouchBlockingCollection<>)).As (typeof(IPclBlockingCollection<>));
+			builder.RegisterType<NativeLogger> ().As<INativeLogger> ().SingleInstance ();
 
 			var reversedWordFinder = new TransformManyBlock<Optional<string[]>, Optional<string>> (optionalWords => {
 				var reversedWords = new ConcurrentQueue<Optional<string>>();

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Autofac;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Services;
 
 namespace DataflowQueue
 {
@@ -16,8 +17,11 @@ namespace DataflowQueue
 
 		public App (ContainerBuilder builder, TransformManyBlock<Optional<string[]>, Optional<string>> reversedWordFinder = null)
 		{
+			builder.RegisterType<Logger> ().As<ILogger> ().SingleInstance ();
+
+			IoC.Container = builder.Build ();
+
 			_reversedWordFinder = reversedWordFinder;
-			builder.Build ();
 
 			label1 = new Label {
 				XAlign = TextAlignment.Center,

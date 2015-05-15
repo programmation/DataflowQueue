@@ -2,17 +2,18 @@
 using System.Threading.Tasks.Dataflow;
 
 //using System.Threading.Tasks.Parallel;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Linq;
-using Xamarin.Forms;
-using DataflowQueue;
-using Autofac;
-using OptionalString = DataflowQueue.Optional<string>;
-using OptionalStringArray = DataflowQueue.Optional<string[]>;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Autofac;
+using DataflowQueue;
+using Services;
+using Xamarin.Forms;
+using OptionalString = DataflowQueue.Optional<string>;
+using OptionalStringArray = DataflowQueue.Optional<string[]>;
 
 namespace DataflowQueue
 {
@@ -23,9 +24,12 @@ namespace DataflowQueue
 		TransformBlock<Optional<string[]>, Optional<string[]>> _filterWordList;
 		TransformManyBlock<Optional<string[]>, Optional<string>> _findReversedWords;
 		ActionBlock<Optional<string>> _printResults;
+		ILogger _logger;
 
 		public ReversedWordFinder (TransformManyBlock<Optional<string[]>, Optional<string>> reversedWordFinder)
 		{
+			_logger = IoC.Container.Resolve<ILogger> ();
+
 			_downloadStringAsync = new TransformBlock<string, Optional<string>> (
 				new Func<string, Task<Optional<string>>> (async uri => {
 					return await DoDownloadAsync (uri);
@@ -61,7 +65,7 @@ namespace DataflowQueue
 
 		private async Task<Optional<string>> DoDownloadAsync (string uri)
 		{
-			Debug.WriteLine ("Downloading {0}", uri);	
+			_logger.Debug (this, "Downloading {0}", uri);	
 
 			Optional<string> optionalString = null;
 			try {
@@ -80,7 +84,7 @@ namespace DataflowQueue
 				return new Optional<string[]> (optionalText.Fault);
 			}
 
-			Debug.WriteLine ("Creating word list...");
+			_logger.Debug (this, "Creating word list...");
 
 			var text = optionalText.Value;
 
@@ -103,7 +107,7 @@ namespace DataflowQueue
 				return new Optional<string[]> (optionalWords.Fault);
 			}	
 
-			Debug.WriteLine ("Filtering word list...");
+			_logger.Debug (this, "Filtering word list...");
 
 			var wordList = optionalWords.Value
 				.Where (word => word.Length > 2)
@@ -111,7 +115,7 @@ namespace DataflowQueue
 				.Distinct ()
 				.ToArray ();
 
-			Debug.WriteLine ("Found {0} words", wordList.Length);
+			_logger.Debug (this, "Found {0} words", wordList.Length);
 
 			return new Optional<string[]> (wordList);
 		}
@@ -123,7 +127,7 @@ namespace DataflowQueue
 			if (optionalWords.IsFaulted) {
 				reversedWords.Enqueue (new Optional<string> (optionalWords.Fault));
 			} else {
-				Debug.WriteLine ("Checking for reversible words...");
+				_logger.Debug (this, "Checking for reversible words...");
 
 				var words = optionalWords.Value;
 
@@ -141,13 +145,15 @@ namespace DataflowQueue
 		private void DoPrint(Optional<string> optionalWord)
 		{
 			if (optionalWord.IsFaulted) {
-				Debug.WriteLine ("Failed! {0}", optionalWord.Fault);
+				_logger.Debug (this, "Failed! {0}", optionalWord.Fault);
 				return;
 			}	
 
 			var reversedWord = optionalWord.Value;
+			var word = new string (reversedWord.ToCharArray ().Reverse ().ToArray ());
 
-			Debug.WriteLine ("Found reversed word {0} / {1}", reversedWord, new string (reversedWord.ToCharArray ().Reverse ().ToArray ()));
+			// Have to cast last param to object otherwise compiler hooks the call up to the wrong method
+			_logger.Debug (this, "Found reversed word {0} / {1}", reversedWord, (object)word);
 		}
 
 		public void Post (string uri)
