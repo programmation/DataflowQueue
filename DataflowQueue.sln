@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataflowQueue.Droid", "Droi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataflowQueue.UITests", "UITests\DataflowQueue.UITests.csproj", "{2B71C23F-1072-461E-A43E-0AF574820DD3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4F540307-94E0-439B-80AA-DF68E631D088}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,5 +72,7 @@ Global
 		{F9B73EF3-17C8-477D-9AB1-A58FBD2A4638}.Release|iPhone.Build.0 = Release|Any CPU
 		{F9B73EF3-17C8-477D-9AB1-A58FBD2A4638}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{F9B73EF3-17C8-477D-9AB1-A58FBD2A4638}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal
