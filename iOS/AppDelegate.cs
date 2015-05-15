@@ -33,12 +33,13 @@ namespace DataflowQueue.iOS
 			builder.RegisterType<NativeLogger> ().As<INativeLogger> ().SingleInstance ();
 
 			var reversedWordFinder = new TransformManyBlock<Optional<string[]>, Optional<string>> (optionalWords => {
+				var logger = IoC.Container.Resolve<ILogger> ();
 				var reversedWords = new ConcurrentQueue<Optional<string>>();
 
 				if (optionalWords.IsFaulted) {
 					reversedWords.Enqueue(new Optional<string>(optionalWords.Fault));
 				} else {
-					Debug.WriteLine("Checking for reversible words...");
+					logger.Debug(this, "Checking for reversible words...");
 
 					var words = optionalWords.Value;
 

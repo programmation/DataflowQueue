@@ -122,7 +122,7 @@ namespace Services
 		private IPclBlockingCollection<LogData> _log;
 		private readonly INativeLogger _nativeLogger;
 
-		//		private readonly ActionBlock<LogData> _loggingQueue;
+		private readonly ActionBlock<LogData> _loggingQueue;
 
 		public Logger ()
 		{
@@ -130,11 +130,11 @@ namespace Services
 			_log = IoC.Container.Resolve<IPclBlockingCollection<LogData>> ();
 			_nativeLogger = IoC.Container.Resolve<INativeLogger> ();
 
-			//			_loggingQueue = new ActionBlock<LogData> (logEntry => {
-			//				_nativeLogger.WriteLine (logEntry.Ticks, logEntry.Flag, logEntry.Location, logEntry.Template, logEntry.Data, logEntry.Caller, logEntry.Line, logEntry.File, logEntry.ThreadId);
-			//			});
+			_loggingQueue = new ActionBlock<LogData> (logEntry => {
+				_nativeLogger.WriteLine (logEntry.Ticks, logEntry.Flag, logEntry.Location, logEntry.Template, logEntry.Data, logEntry.Caller, logEntry.Line, logEntry.File, logEntry.ThreadId);
+			});
 
-			Start ();
+//			Start ();
 		}
 
 		private void Start ()
@@ -269,8 +269,8 @@ namespace Services
 
 		private void Write (LogData logEntry)
 		{
-			//			_loggingQueue.Post (logEntry);
-			_log.Add (logEntry);
+			_loggingQueue.Post (logEntry);
+//			_log.Add (logEntry);
 		}
 	}
 }
