@@ -11,9 +11,9 @@
 			<BoxView BackgroundColor="Transparent" HeightRequest="10" />
 			<Grid HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="100" />
-					<ColumnDefinition Width="100" />
-					<ColumnDefinition Width="100" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="24" />
