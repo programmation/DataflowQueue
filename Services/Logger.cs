@@ -139,7 +139,9 @@ namespace Services
 
 		private void Start ()
 		{
-			#pragma warning disable 414
+			#pragma warning disable 0414
+			#pragma warning disable 0168
+			#pragma warning disable 0219
 			// A simple blocking consumer with no cancellation.
 			Task.Run (() => {
 				while (!_log.IsCompleted) {
@@ -166,7 +168,9 @@ namespace Services
 					}
 				}
 			});
-			#pragma warning restore 414
+			#pragma warning restore 0219
+			#pragma warning restore 0168
+			#pragma warning restore 0414
 		}
 
 		public void Debug (object location, string template, 

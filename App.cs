@@ -69,10 +69,11 @@ namespace DataflowQueue
 
 			var worker = new ReversedWordFinder (_reversedWordFinder);
 
+			#pragma warning disable 0162
 			if (true) {
-				worker.Post ("http://www.gutenberg.org/files/6130/6130-0.txt");
 				worker.Post ("http://www.gutenberg.org/cache/epub/1727/pg1727.txt");
 				worker.Post ("http://www.gutenberg.org/cache/epub/1635/pg1635.txt");
+				worker.Post ("http://www.gutenberg.org/files/6130/6130-0.txt");
 				_going = false;
 			} else {
 				Task.Run (async () => {
@@ -80,6 +81,7 @@ namespace DataflowQueue
 					_going = false;
 				});
 			}
+			#pragma warning restore 0162
 		}
 
 		protected override void OnStart ()

@@ -19,7 +19,6 @@ namespace DataflowQueue.iOS
 				UIApplication.Main (args, null, "AppDelegate");
 			} catch (Exception ex) {
 				Console.WriteLine ("Exception: {0}", ex);
-				var test = 1;
 			}
 		}
 	}
