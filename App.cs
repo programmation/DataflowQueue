@@ -5,83 +5,27 @@ using Autofac;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Services;
+using WordFinderString = DataflowQueue.WordFinderResult<string>;
+using WordFinderArray = DataflowQueue.WordFinderResult<string[]>;
+using System.Collections.ObjectModel;
 
 namespace DataflowQueue
 {
 	public class App : Application
 	{
-		Label label1;
-		Button button1;
-		Label label2;
-		TransformManyBlock<Optional<string[]>, Optional<string>> _reversedWordFinder;
-
-		public App (ContainerBuilder builder, TransformManyBlock<Optional<string[]>, Optional<string>> reversedWordFinder = null)
+		public App (ContainerBuilder builder, 
+			TransformBlock<string, WordFinderString> asyncStringLoader, 
+			TransformManyBlock<WordFinderArray, WordFinderString> nativeReversibleWordsFinder = null
+		)
 		{
 			builder.RegisterType<Logger> ().As<ILogger> ().SingleInstance ();
 
 			IoC.Container = builder.Build ();
 
-			_reversedWordFinder = reversedWordFinder;
-
-			label1 = new Label {
-				XAlign = TextAlignment.Center,
-				Text = "Welcome!",
-			};
-			button1 = new Button {
-				Text = "Go!",
-				Command = GoCommand,
-			};
-			label2 = new Label {
-				XAlign = TextAlignment.Start,
-			};
-				
 			// The root page of your application
 			MainPage = new NavigationPage (
-				new ContentPage {
-					Content = new StackLayout {
-						VerticalOptions = LayoutOptions.Start,
-						Children = {
-							label1,
-							button1,
-							label2,
-						}
-					}
-				}
+				new ReversibleWordsPage (asyncStringLoader, nativeReversibleWordsFinder)
 			);
-		}
-
-		public ICommand GoCommand {
-			get {
-				return new Command (() => {
-					DoGo ();
-				});
-			}
-		}
-
-		private bool _going = false;
-
-		private void DoGo ()
-		{
-			if (_going)
-				return;
-			
-			_going = true;
-
-			var worker = new ReversedWordFinder (_reversedWordFinder);
-
-			#pragma warning disable 0162
-			if (true) {
-				worker.Post ("http://www.gutenberg.org/cache/epub/1727/pg1727.txt");
-				worker.Post ("http://www.gutenberg.org/cache/epub/1635/pg1635.txt");
-				worker.Post ("http://www.gutenberg.org/files/6130/6130-0.txt");
-				_going = false;
-			} else {
-				Task.Run (async () => {
-					await worker.SendAsync ("http://www.gutenberg.org/files/6130/6130-0.txt");
-					_going = false;
-				});
-			}
-			#pragma warning restore 0162
 		}
 
 		protected override void OnStart ()

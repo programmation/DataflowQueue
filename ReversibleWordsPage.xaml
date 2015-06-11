@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+	xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	x:Class="DataflowQueue.ReversibleWordsPage"
+	Title="Reversible Words"
+	>
+	<ContentPage.Content>
+		<StackLayout>
+			<Button Text="Go!" Command="{Binding Go}" />
+			<BoxView BackgroundColor="Transparent" HeightRequest="10" />
+			<Grid HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100" />
+					<ColumnDefinition Width="100" />
+					<ColumnDefinition Width="100" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="24" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+				<Label
+					Grid.Column="0" Grid.Row="0" 
+					Text="{Binding Book0}"
+					/>
+				<Label
+					Grid.Column="1" Grid.Row="0" 
+					Text="{Binding Book1}"
+					/>
+				<Label
+					Grid.Column="2" Grid.Row="0" 
+					Text="{Binding Book2}"
+					/>
+				<ListView x:Name="list0"
+					Grid.Column="0" Grid.Row="1"
+					ItemsSource="{Binding ProgressReports0}" 
+					SeparatorVisibility="None"
+					HasUnevenRows="True"
+					BackgroundColor="Gray"
+					>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="100" />
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*" />
+									</Grid.RowDefinitions>
+									<Label Text="{Binding Report}" 
+										Grid.Column="0" Grid.Row="0"
+										FontSize="Micro" />
+								</Grid>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+				<ListView x:Name="list1"
+					Grid.Column="1" Grid.Row="1"
+					ItemsSource="{Binding ProgressReports1}" 
+					SeparatorVisibility="None"
+					HasUnevenRows="True"
+					BackgroundColor="Silver"
+					>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="100" />
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*" />
+									</Grid.RowDefinitions>
+									<Label Text="{Binding Report}" 
+										Grid.Column="0" Grid.Row="0"
+										FontSize="Micro" />
+								</Grid>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+				<ListView x:Name="list2"
+					Grid.Column="2" Grid.Row="1"
+					ItemsSource="{Binding ProgressReports2}" 
+					SeparatorVisibility="None"
+					HasUnevenRows="True"
+					BackgroundColor="Olive"
+					>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="100" />
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*" />
+									</Grid.RowDefinitions>
+									<Label Text="{Binding Report}" 
+										Grid.Column="0" Grid.Row="0"
+										FontSize="Micro" />
+								</Grid>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</Grid>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>
