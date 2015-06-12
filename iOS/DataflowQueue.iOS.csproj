@@ -119,6 +119,8 @@
     <BundleResource Include="Resources\Iliad.txt" />
     <BundleResource Include="Resources\Ion.txt" />
     <BundleResource Include="Resources\Odyssey.txt" />
+    <BundleResource Include="Resources\gear39.png" />
+    <BundleResource Include="Resources\gear39%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

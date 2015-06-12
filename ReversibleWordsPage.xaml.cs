@@ -8,12 +8,18 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.IO;
+using Helpers;
+
+/*
+ * <div>Icons made by <a href="http://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev">Egor Rumyantsev</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
+ */
 
 namespace DataflowQueue
 {
 	public partial class ReversibleWordsPage : ContentPage
 	{
-		ReversedWordFinder _worker;
+		private ReversedWordFinder _worker;
+		private ActionBlock<ProgressStatus> _queue;
 
 		public string Url0 { get; set; }
 		public string Url1 { get; set; }
@@ -30,8 +36,6 @@ namespace DataflowQueue
 		public ReversibleWordsPage ()
 		{
 			InitializeComponent ();
-
-			_worker = new ReversedWordFinder ();
 
 			if (true) {
 				Url0 = "Iliad.txt";
@@ -51,30 +55,36 @@ namespace DataflowQueue
 			ProgressReports1 = new ObservableCollection<ProgressStatus> ();
 			ProgressReports2 = new ObservableCollection<ProgressStatus> ();
 
-			_worker.ProgressReporter += (string title, string message) => {
+			_queue = new ActionBlock<ProgressStatus> (item => {
 				Device.BeginInvokeOnMainThread (() => {
-					var item = new ProgressStatus (title, message);
-					if (title == Book0) {
+					if (item.Book == Book0) {
 						ProgressReports0.Add (item);
 //						list0.ScrollTo (item, ScrollToPosition.MakeVisible, false);
 					}
-					if (title == Book1) {
+					if (item.Book == Book1) {
 						ProgressReports1.Add (item);
 //						list1.ScrollTo (item, ScrollToPosition.MakeVisible, false);
 					}
-					if (title == Book2) {
+					if (item.Book == Book2) {
 						ProgressReports2.Add (item);
 //						list2.ScrollTo (item, ScrollToPosition.MakeVisible, false);
 					}
 				});
+			});
+			_worker = new ReversedWordFinder ();
+
+			_worker.ProgressReporter += (string title, string message) => {
+				_queue.Post (new ProgressStatus(title, message));
 			};
 
 			BindingContext = this;
 		}
 
+		private ICommand _go;
+
 		public ICommand Go {
 			get {
-				return new Command (() => {
+				return _go = _go ?? new Command (() => {
 					DoGo ();
 				});
 			}
@@ -110,6 +120,20 @@ namespace DataflowQueue
 			#pragma warning restore 0162
 		}
 
+		private ICommand _settings;
+
+		public ICommand Settings {
+			get {
+				return _settings = _settings ?? new Command (() => {
+					DoSettings ();
+				});
+			}	
+		}
+
+		private void DoSettings()
+		{
+			
+		}
 	}
 }
 
