@@ -43,14 +43,14 @@
 							<ViewCell>
 								<Grid>
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="100" />
+										<ColumnDefinition Width="*" />
 									</Grid.ColumnDefinitions>
 									<Grid.RowDefinitions>
 										<RowDefinition Height="*" />
 									</Grid.RowDefinitions>
 									<Label Text="{Binding Report}" 
 										Grid.Column="0" Grid.Row="0"
-										FontSize="Micro" />
+										FontSize="Small" />
 								</Grid>
 							</ViewCell>
 						</DataTemplate>
@@ -68,14 +68,14 @@
 							<ViewCell>
 								<Grid>
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="100" />
+										<ColumnDefinition Width="*" />
 									</Grid.ColumnDefinitions>
 									<Grid.RowDefinitions>
 										<RowDefinition Height="*" />
 									</Grid.RowDefinitions>
 									<Label Text="{Binding Report}" 
 										Grid.Column="0" Grid.Row="0"
-										FontSize="Micro" />
+										FontSize="Small" />
 								</Grid>
 							</ViewCell>
 						</DataTemplate>
@@ -93,14 +93,14 @@
 							<ViewCell>
 								<Grid>
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="100" />
+										<ColumnDefinition Width="*" />
 									</Grid.ColumnDefinitions>
 									<Grid.RowDefinitions>
 										<RowDefinition Height="*" />
 									</Grid.RowDefinitions>
 									<Label Text="{Binding Report}" 
 										Grid.Column="0" Grid.Row="0"
-										FontSize="Micro" />
+										FontSize="Small" />
 								</Grid>
 							</ViewCell>
 						</DataTemplate>

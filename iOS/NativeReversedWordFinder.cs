@@ -35,7 +35,8 @@ namespace DataflowQueue.iOS
 
 			ProgressReporter += Report;
 
-			var readerParallelism = 2;
+			var readerParallelism = DataflowBlockOptions.Unbounded;
+			var analyserParallelism = DataflowBlockOptions.Unbounded;
 
 			AsyncStringLoader = new TransformBlock<string, WordFinderString> (
 				new Func<string, Task<WordFinderString>> (async (path) => {
@@ -59,6 +60,9 @@ namespace DataflowQueue.iOS
 					} catch (Exception ex) {
 						optionalString = new Optional<string> (ex);
 					}
+
+					ProgressReporter (title, String.Format ("Loaded {0} characters", optionalString.Value.Length));
+					_logger.Debug (this, "Loaded {0} characters", (object)optionalString.Value.Length);
 
 					return new WordFinderString(path, optionalString);
 				}),
@@ -84,6 +88,8 @@ namespace DataflowQueue.iOS
 					Parallel.ForEach (words, word => {
 						var reverse = new string(word.ToCharArray ().Reverse ().ToArray ());
 						if (Array.BinarySearch<string> (words, reverse) >= 0 && word != reverse) {
+//							ProgressReporter (title, String.Format ("Found {0} / {1}", word, reverse));
+//							_logger.Debug (this, "{0}: Found {1} / {2}", (object)title, (object)word, (object)reverse);
 							reversibleWords.Enqueue (new WordFinderString(input.Uri, new Optional<string>(word)));
 						}
 					});
@@ -93,7 +99,7 @@ namespace DataflowQueue.iOS
 				}
 
 				return reversibleWords;
-			});
+			}, new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = analyserParallelism });
 		}
 
 		private void Report(string s1, string s2)

@@ -56,15 +56,15 @@ namespace DataflowQueue
 					var item = new ProgressStatus (title, message);
 					if (title == Book0) {
 						ProgressReports0.Add (item);
-						list0.ScrollTo (item, ScrollToPosition.MakeVisible, false);
+//						list0.ScrollTo (item, ScrollToPosition.MakeVisible, false);
 					}
 					if (title == Book1) {
 						ProgressReports1.Add (item);
-						list1.ScrollTo (item, ScrollToPosition.MakeVisible, false);
+//						list1.ScrollTo (item, ScrollToPosition.MakeVisible, false);
 					}
 					if (title == Book2) {
 						ProgressReports2.Add (item);
-						list2.ScrollTo (item, ScrollToPosition.MakeVisible, false);
+//						list2.ScrollTo (item, ScrollToPosition.MakeVisible, false);
 					}
 				});
 			};

@@ -50,9 +50,9 @@ namespace DataflowQueue
 			_logger = IoC.Container.Resolve<ILogger> ();
 			_nativeReversedWordFinder = IoC.Container.Resolve<INativeReversedWordFinder> ();
 
-			var readerParallelism = 2;
-			var analyserParallelism = 1;
-			var printerParallelism = 1;
+			var readerParallelism = DataflowBlockOptions.Unbounded;
+			var analyserParallelism = DataflowBlockOptions.Unbounded;
+			var printerParallelism = DataflowBlockOptions.Unbounded;
 
 			ProgressReporter += Report; // ensure that ProgressReporter != null
 
@@ -67,11 +67,11 @@ namespace DataflowQueue
 
 			_createWordList = new TransformBlock<WordFinderString, WordFinderArray> (input => {
 				return DoCreateWordList (input);
-			});
+			}, new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = analyserParallelism });
 
 			_filterWordList = new TransformBlock<WordFinderArray, WordFinderArray> (input => {
 				return DoFilterWordList (input);
-			});
+			}, new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = analyserParallelism });
 
 			if (_nativeReversedWordFinder.ReversedWordFinder != null) {
 				_findReversedWords = _nativeReversedWordFinder.ReversedWordFinder;
@@ -84,7 +84,7 @@ namespace DataflowQueue
 
 			_printResults = new ActionBlock<WordFinderString> (input => {
 				DoPrint (input);
-			});
+			}, new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = printerParallelism });
 
 			_loadStringAsync.LinkTo (_createWordList, new DataflowLinkOptions { PropagateCompletion = true, });
 			_downloadStringAsync.LinkTo (_createWordList, new DataflowLinkOptions { PropagateCompletion = true, });
