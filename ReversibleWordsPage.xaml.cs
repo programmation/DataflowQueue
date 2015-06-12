@@ -27,12 +27,11 @@ namespace DataflowQueue
 		public ObservableCollection<ProgressStatus> ProgressReports1 { get; set; }
 		public ObservableCollection<ProgressStatus> ProgressReports2 { get; set; }
 
-		public ReversibleWordsPage (TransformBlock<string, WordFinderString> asyncStringLoader, 
-			TransformManyBlock<WordFinderArray, WordFinderString> nativeReversibleWordsFinder)
+		public ReversibleWordsPage ()
 		{
 			InitializeComponent ();
 
-			_worker = new ReversedWordFinder (asyncStringLoader, nativeReversibleWordsFinder);
+			_worker = new ReversedWordFinder ();
 
 			if (true) {
 				Url0 = "Iliad.txt";

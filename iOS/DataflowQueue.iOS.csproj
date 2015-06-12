@@ -134,6 +134,7 @@
     <Compile Include="TouchConcurrentQueue.cs" />
     <Compile Include="Services\NativeLogger.cs" />
     <Compile Include="TouchBlockingCollection.cs" />
+    <Compile Include="NativeReversedWordFinder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="ITunesArtwork" />

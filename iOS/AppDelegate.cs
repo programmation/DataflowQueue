@@ -37,66 +37,13 @@ namespace DataflowQueue.iOS
 			builder.RegisterGeneric (typeof(TouchConcurrentQueue<>)).As (typeof(IPclConcurrentQueue<>));
 			builder.RegisterGeneric (typeof(TouchBlockingCollection<>)).As (typeof(IPclBlockingCollection<>));
 			builder.RegisterType<NativeLogger> ().As<INativeLogger> ().SingleInstance ();
+			builder.RegisterType<NativeReversedWordFinder> ().As<INativeReversedWordFinder> ();
 
-			var readerParallelism = 2;
-
-			var stringLoader = new TransformBlock<string, WordFinderString> (
-				new Func<string, Task<WordFinderString>> (async (path) => {
-					var logger = IoC.Container.Resolve<ILogger> ();
-
-					logger.Debug (this, "Loading {0}", (object)path);
-
-					Optional<string> optionalString = null;
-
-					try {
-						var uniencoding = new UTF8Encoding();
-						byte[] fileText;
-
-						using (var sourceStream = File.Open (path, FileMode.Open)) {
-							fileText = new byte[sourceStream.Length];
-							await sourceStream.ReadAsync (fileText, 0, (int)sourceStream.Length);
-						}
-
-						optionalString = new Optional<string> (uniencoding.GetString (fileText));
-					} catch (Exception ex) {
-						optionalString = new Optional<string> (ex);
-					}
-
-					return new WordFinderString(path, optionalString);
-				}),
-				new ExecutionDataflowBlockOptions { MaxMessagesPerTask = readerParallelism, }
-			);
-				
-			var reversedWordFinder = new TransformManyBlock<WordFinderArray, WordFinderString> (input => {
-				var title = Path.GetFileName (input.Uri);
-				var optionalWords = input.Result;
-
-				var logger = IoC.Container.Resolve<ILogger> ();
-				var reversibleWords = new ConcurrentQueue<WordFinderString> ();
-
-				if (optionalWords.IsFaulted) {
-					reversibleWords.Enqueue(new WordFinderString(input.Uri, new Optional<string>(optionalWords.Fault)));
-				} else {
-					logger.Debug(this, "{0}: Checking for reversible words...", (object)title);
-
-					var words = optionalWords.Value;
-
-					// Parallel not available in PCL on Mono
-					Parallel.ForEach (words, word => {
-						var reverse = new string(word.ToCharArray ().Reverse ().ToArray ());
-						if (Array.BinarySearch<string> (words, reverse) >= 0 && word != reverse) {
-							reversibleWords.Enqueue (new WordFinderString(input.Uri, new Optional<string>(word)));
-						}
-					});
-				}
-
-				return reversibleWords;
-			});
-
-			LoadApplication (new App (builder, stringLoader, reversedWordFinder));
+			LoadApplication (new App (builder));
 
 			return base.FinishedLaunching (app, options);
 		}
 	}
+
 }
 

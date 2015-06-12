@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks.Dataflow;
-
 //using System.Threading.Tasks.Parallel;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +16,7 @@ using OptionalStringArray = DataflowQueue.Optional<string[]>;
 using WordFinderString = DataflowQueue.WordFinderResult<string>;
 using WordFinderArray = DataflowQueue.WordFinderResult<string[]>;
 using System.IO;
+using System.ComponentModel;
 
 namespace DataflowQueue
 {
@@ -35,6 +35,7 @@ namespace DataflowQueue
 	public class ReversedWordFinder
 	{
 		private ILogger _logger;
+		private INativeReversedWordFinder _nativeReversedWordFinder;
 		private TransformBlock<string, WordFinderString> _loadStringAsync;
 		private TransformBlock<string, WordFinderString> _downloadStringAsync;
 		private TransformBlock<WordFinderString, WordFinderArray> _createWordList;
@@ -44,16 +45,18 @@ namespace DataflowQueue
 
 		public event Action<string, string> ProgressReporter;
 
-		public ReversedWordFinder (TransformBlock<string, WordFinderString> asyncStringLoader, TransformManyBlock<WordFinderArray, WordFinderString> reversedWordFinder)
+		public ReversedWordFinder ()
 		{
 			_logger = IoC.Container.Resolve<ILogger> ();
+			_nativeReversedWordFinder = IoC.Container.Resolve<INativeReversedWordFinder> ();
+
 			var readerParallelism = 2;
 			var analyserParallelism = 1;
 			var printerParallelism = 1;
 
 			ProgressReporter += Report; // ensure that ProgressReporter != null
 
-			_loadStringAsync = asyncStringLoader;
+			_loadStringAsync = _nativeReversedWordFinder.AsyncStringLoader;
 
 			_downloadStringAsync = new TransformBlock<string, WordFinderString> (
 				new Func<string, Task<WordFinderString>> (async uri => {
@@ -70,8 +73,9 @@ namespace DataflowQueue
 				return DoFilterWordList (input);
 			});
 
-			if (reversedWordFinder != null) {
-				_findReversedWords = reversedWordFinder;
+			if (_nativeReversedWordFinder.ReversedWordFinder != null) {
+				_findReversedWords = _nativeReversedWordFinder.ReversedWordFinder;
+				_nativeReversedWordFinder.ProgressReporter += NativeReport;
 			} else {
 				_findReversedWords = new TransformManyBlock<WordFinderArray, WordFinderString> (input => {
 					return DoFindReversedWords (input);
@@ -187,7 +191,10 @@ namespace DataflowQueue
 						reversedWords.Enqueue (new WordFinderString(input.Uri, new Optional<string> (word)));
 					}
 				}
+				ProgressReporter (title, String.Format ("Found {0} reversible words!", reversedWords.Count));
+				_logger.Debug (this, "{0}: Found {1} reversible words!", (object)title, (object)reversedWords.Count);
 			}
+
 			return (IEnumerable<WordFinderString>)reversedWords;
 		}
 
@@ -242,8 +249,13 @@ namespace DataflowQueue
 			_printResults.Completion.Wait ();
 		}
 
-		public void Report(string s1, string s2)
+		private void Report(string s1, string s2)
 		{			
+		}
+
+		private void NativeReport(string title, string message)
+		{
+			ProgressReporter (title, message);
 		}
 	}
 }

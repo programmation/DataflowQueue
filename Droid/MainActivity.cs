@@ -29,7 +29,7 @@ namespace DataflowQueue.Droid
 			builder.RegisterGeneric (typeof(DroidBlockingCollection<>)).As (typeof(IPclBlockingCollection<>));
 			builder.RegisterType<NativeLogger> ().As<INativeLogger> ().SingleInstance ();
 
-			LoadApplication (new App (builder, null));
+			LoadApplication (new App (builder));
 		}
 	}
 }

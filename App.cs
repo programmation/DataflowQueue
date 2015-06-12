@@ -13,10 +13,7 @@ namespace DataflowQueue
 {
 	public class App : Application
 	{
-		public App (ContainerBuilder builder, 
-			TransformBlock<string, WordFinderString> asyncStringLoader, 
-			TransformManyBlock<WordFinderArray, WordFinderString> nativeReversibleWordsFinder = null
-		)
+		public App (ContainerBuilder builder)
 		{
 			builder.RegisterType<Logger> ().As<ILogger> ().SingleInstance ();
 
@@ -24,7 +21,7 @@ namespace DataflowQueue
 
 			// The root page of your application
 			MainPage = new NavigationPage (
-				new ReversibleWordsPage (asyncStringLoader, nativeReversibleWordsFinder)
+				new ReversibleWordsPage ()
 			);
 		}
 
