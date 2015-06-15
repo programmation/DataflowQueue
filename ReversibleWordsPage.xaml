@@ -3,7 +3,7 @@
 	xmlns="http://xamarin.com/schemas/2014/forms" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 	x:Class="DataflowQueue.ReversibleWordsPage"
-	Title="Reversible Words"
+	Title="ActionBlocks"
 	>
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Name="Go!" Command="{Binding Go}" Order="Primary" Priority="0" />

@@ -20,9 +20,16 @@ namespace DataflowQueue
 			IoC.Container = builder.Build ();
 
 			// The root page of your application
-			MainPage = new NavigationPage (
-				new ReversibleWordsPage ()
+			var mainPage = new TabbedPage ();
+			mainPage.Children.Add (
+				new NavigationPage (
+					new ReversibleWordsPage ()
+				) {
+					Title = "ActionBlocks"
+				}
 			);
+
+			MainPage = mainPage;
 		}
 
 		protected override void OnStart ()
