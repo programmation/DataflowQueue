@@ -1,13 +1,14 @@
 ﻿using System;
-using Xamarin.Forms;
-using System.Windows.Input;
-using Autofac;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using System.Windows.Input;
+using Autofac;
+using DataflowQueue.Pages;
 using Services;
-using WordFinderString = DataflowQueue.WordFinderResult<string>;
+using Xamarin.Forms;
 using WordFinderArray = DataflowQueue.WordFinderResult<string[]>;
-using System.Collections.ObjectModel;
+using WordFinderString = DataflowQueue.WordFinderResult<string>;
 
 namespace DataflowQueue
 {

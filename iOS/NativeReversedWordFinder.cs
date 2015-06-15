@@ -2,7 +2,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Autofac;
@@ -11,10 +13,8 @@ using Foundation;
 using Helpers;
 using Services;
 using UIKit;
-using WordFinderString = DataflowQueue.WordFinderResult<string>;
 using WordFinderArray = DataflowQueue.WordFinderResult<string[]>;
-using System.IO;
-using System.Text;
+using WordFinderString = DataflowQueue.WordFinderResult<string>;
 
 namespace DataflowQueue.iOS
 {

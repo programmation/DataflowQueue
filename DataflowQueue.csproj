@@ -40,11 +40,14 @@
     <Compile Include="Helpers\IPclBlockingCollection.cs" />
     <Compile Include="Services\INativeLogger.cs" />
     <Compile Include="Services\Logger.cs" />
-    <Compile Include="ReversibleWordsPage.xaml.cs">
-      <DependentUpon>ReversibleWordsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ProgressStatus.cs" />
     <Compile Include="INativeReversedWordFinder.cs" />
+    <Compile Include="Views\ReversibleWordsListView.xaml.cs">
+      <DependentUpon>ReversibleWordsListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ReversibleWordsPage.xaml.cs">
+      <DependentUpon>ReversibleWordsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -84,9 +87,14 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Services\" />
+    <Folder Include="Views\" />
+    <Folder Include="Pages\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ReversibleWordsPage.xaml">
+    <EmbeddedResource Include="Views\ReversibleWordsListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\ReversibleWordsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
