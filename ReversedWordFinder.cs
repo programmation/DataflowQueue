@@ -1,37 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks.Dataflow;
-//using System.Threading.Tasks.Parallel;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Autofac;
-using DataflowQueue;
 using Services;
-using Xamarin.Forms;
-using OptionalString = DataflowQueue.Optional<string>;
-using OptionalStringArray = DataflowQueue.Optional<string[]>;
 using WordFinderString = DataflowQueue.WordFinderResult<string>;
 using WordFinderArray = DataflowQueue.WordFinderResult<string[]>;
 using System.IO;
-using System.ComponentModel;
 
 namespace DataflowQueue
 {
-	public class WordFinderResult<T>
-	{
-		public string Uri { get; private set; }
-		public Optional<T> Result { get; private set; }
-
-		public WordFinderResult(string uri, Optional<T> result)
-		{
-			Uri = uri;
-			Result = result;
-		}
-	}
-
 	public class ReversedWordFinder
 	{
 		private ILogger _logger;
@@ -73,7 +53,7 @@ namespace DataflowQueue
 				return DoFilterWordList (input);
 			}, new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = analyserParallelism });
 
-			if (_nativeReversedWordFinder.ReversedWordFinder != null) {
+			if (_nativeReversedWordFinder != null && _nativeReversedWordFinder.ReversedWordFinder != null) {
 				_findReversedWords = _nativeReversedWordFinder.ReversedWordFinder;
 				_nativeReversedWordFinder.ProgressReporter += NativeReport;
 			} else {

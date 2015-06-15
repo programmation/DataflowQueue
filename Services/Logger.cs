@@ -126,14 +126,16 @@ namespace Services
 
 		public Logger ()
 		{
-			_excluded = new Dictionary<string, bool> ();
-			_log = IoC.Container.Resolve<IPclBlockingCollection<LogData>> ();
 			_nativeLogger = IoC.Container.Resolve<INativeLogger> ();
+			_excluded = new Dictionary<string, bool> ();
 
+			// Log using ActionBlock<LogData>
 			_loggingQueue = new ActionBlock<LogData> (logEntry => {
 				_nativeLogger.WriteLine (logEntry.Ticks, logEntry.Flag, logEntry.Location, logEntry.Template, logEntry.Data, logEntry.Caller, logEntry.Line, logEntry.File, logEntry.ThreadId);
 			});
 
+			// Log using infinite loop consumer task
+//			_log = IoC.Container.Resolve<IPclBlockingCollection<LogData>> ();
 //			Start ();
 		}
 
@@ -159,12 +161,10 @@ namespace Services
 						}
 					} catch (InvalidOperationException ex) {
 						// do nothing
-						var test = 1;
-						//						Debug.WriteLine ("LOGGER EXCEPTION: {0}", ex);
+//						Debug.WriteLine ("LOGGER EXCEPTION: {0}", ex);
 					} catch (Exception ex) {
 						// do nothing
-						var test = 1;
-						//						Debug.WriteLine ("LOGGER EXCEPTION: {0}", ex);
+//						Debug.WriteLine ("LOGGER EXCEPTION: {0}", ex);
 					}
 				}
 			});
