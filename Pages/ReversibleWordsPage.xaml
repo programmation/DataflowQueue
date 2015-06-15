@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 	xmlns:views="clr-namespace:DataflowQueue.Views;assembly=DataflowQueue"
 	x:Class="DataflowQueue.Pages.ReversibleWordsPage"
-	Title="Reversible Words"
+	Title="ActionBlock"
 	>
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Name="Go!" Command="{Binding Go}" Order="Primary" Priority="0" />
