@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ListView 
+	xmlns="http://xamarin.com/schemas/2014/forms" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	x:Class="DataflowQueue.Views.ReversibleWordsListView"
+	SeparatorVisibility="None"
+	HasUnevenRows="True"
+	>
+	<ListView.ItemTemplate>
+		<DataTemplate>
+			<ViewCell>
+				<Grid Padding="5,2,5,2">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					<Label Text="{Binding Report}" 
+						Grid.Column="0" Grid.Row="0"
+						FontSize="Small" 
+						TextColor="White"
+						/>
+				</Grid>
+			</ViewCell>
+		</DataTemplate>
+	</ListView.ItemTemplate>
+</ListView>
