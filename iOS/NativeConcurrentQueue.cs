@@ -7,11 +7,11 @@ using DataflowQueue.iOS;
 
 namespace DataflowQueue.iOS
 {
-	public class TouchConcurrentQueue<T>
+	public class NativeConcurrentQueue<T>
 		: ConcurrentQueue<T>, IPclConcurrentQueue<T>
 		where T : class
 	{
-		public TouchConcurrentQueue ()
+		public NativeConcurrentQueue ()
 		{
 		}
 	}

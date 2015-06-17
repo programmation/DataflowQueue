@@ -137,10 +137,10 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="TouchConcurrentQueue.cs" />
     <Compile Include="Services\NativeLogger.cs" />
-    <Compile Include="TouchBlockingCollection.cs" />
     <Compile Include="NativeReversedWordFinder.cs" />
+    <Compile Include="NativeBlockingCollection.cs" />
+    <Compile Include="NativeConcurrentQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="ITunesArtwork" />

@@ -34,8 +34,8 @@ namespace DataflowQueue.iOS
 
 			var builder = new ContainerBuilder ();
 
-			builder.RegisterGeneric (typeof(TouchConcurrentQueue<>)).As (typeof(IPclConcurrentQueue<>));
-			builder.RegisterGeneric (typeof(TouchBlockingCollection<>)).As (typeof(IPclBlockingCollection<>));
+			builder.RegisterGeneric (typeof(NativeConcurrentQueue<>)).As (typeof(IPclConcurrentQueue<>));
+			builder.RegisterGeneric (typeof(NativeBlockingCollection<>)).As (typeof(IPclBlockingCollection<>));
 			builder.RegisterType<NativeLogger> ().As<INativeLogger> ().SingleInstance ();
 			builder.RegisterType<NativeReversedWordFinder> ().As<INativeReversedWordFinder> ();
 

@@ -8,7 +8,9 @@
 	>
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Name="Go!" Command="{Binding Go}" Order="Primary" Priority="0" />
+		<!--
 		<ToolbarItem Name="Settings" Command="{Binding Settings}" Order="Primary" Priority="0" Icon="gear39.png" />
+		-->
 	</ContentPage.ToolbarItems>
 	<ContentPage.Content>
 		<StackLayout>

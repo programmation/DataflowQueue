@@ -1,16 +1,15 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.OS;
 using Autofac;
-using Services;
-using Helpers;
 using Dataflow.Droid.Services;
+using Helpers;
+using Services;
 
 namespace DataflowQueue.Droid
 {
@@ -25,9 +24,10 @@ namespace DataflowQueue.Droid
 
 			var builder = new ContainerBuilder ();
 
-			builder.RegisterGeneric (typeof(DroidConcurrentQueue<>)).As (typeof(IPclConcurrentQueue<>));
-			builder.RegisterGeneric (typeof(DroidBlockingCollection<>)).As (typeof(IPclBlockingCollection<>));
+			builder.RegisterGeneric (typeof(NativeConcurrentQueue<>)).As (typeof(IPclConcurrentQueue<>));
+			builder.RegisterGeneric (typeof(NativeBlockingCollection<>)).As (typeof(IPclBlockingCollection<>));
 			builder.RegisterType<NativeLogger> ().As<INativeLogger> ().SingleInstance ();
+			builder.RegisterType<NativeReversedWordFinder> ().As<INativeReversedWordFinder> ();
 
 			LoadApplication (new App (builder));
 		}
